@@ -26,7 +26,8 @@
     "@turf/invariant": "^6.1.2",
     "@turf/length": "^6.0.2",
     "@turf/line-slice-along": "^5.1.5",
-    "@turf/meta": "^6.0.2"
+    "@turf/meta": "^6.0.2",
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
