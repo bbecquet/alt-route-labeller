@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8">
+  <title>Alternative path example</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+  <link rel="stylesheet" href="./example.css">
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="../dist/altRouteLabeller.js"></script>
+  <script src="./example.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      document.querySelectorAll('.map').forEach(mapElement => {
+        altRouteLabelExampleMap(mapElement, {
+          file: `./${mapElement.dataset.file}.geojson`,
+        });
+      });
+    });
+  </script>
+<body>
+  <main>
+    <h1>Examples</h1>
+    <div class="grid-2">
+      <div class="map" data-file="simple"></div>
+      <div class="map" data-file="ex1"></div>
+      <div class="map" data-file="ex2"></div>     
+      <div class="map" data-file="ex3"></div>
+      <div class="map" data-file="ex4"></div>      
+      <div class="map" data-file="ex5"></div>
+      <div class="map" data-file="ex6"></div>
+      <div class="map" data-file="ex7"></div>
+      <div class="map" data-file="ex8"></div>
+      <div class="map" data-file="ex9"></div>
+      <div class="map" data-file="bug"></div>
+      <div class="map" data-file="too_short"></div>
+    </div>
+  </main>
+</body>
+</html>

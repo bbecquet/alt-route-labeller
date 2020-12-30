@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box;
+}
+main {
+  margin: 2rem auto;
+  max-width: 900px;
+}
+.map {
+  height: 300px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+@media screen and (max-width:480px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+.leaflet-tile-pane {
+  filter: grayscale(1) opacity(0.5) contrast(1.25);
+}
+.endPoint-marker {
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.endPoint-marker--destination::after {
+  content: '';
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background-color: black;
+}
+.altRouteLabelAnchor {
+  border: 0;
+  background: transparent;
+}
+.altRouteLabelAnchor-content {
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  width: 100%;
+  height: 100%;
+}
