@@ -51,7 +51,7 @@ export function findDistinctSegments(linestrings) {
     return linestrings;
   }
   // extract raw coordinates
-  const featuresCoords = linestrings.map(ls => dropRepeatedCoords(coordAll(ls)));
+  const featuresCoords = linestrings.map(coordAll);
   // count occurences of each coordinate accross all features
   const coordCounts = new Map();
   [].concat(...featuresCoords).forEach(coord => {
@@ -60,7 +60,7 @@ export function findDistinctSegments(linestrings) {
   return featuresCoords.map(coordinates => distinctSegment(coordinates, coordCounts));
 }
 
-const toSimpleLinestring = geoJson => lineString(coordAll(geoJson));
+const toSimpleLinestring = geoJson => lineString(dropRepeatedCoords(coordAll(geoJson)));
 
 const TOLERANCE = 0.000001;
 const floatEquals = (f1, f2) => Math.abs(f1 - f2) < TOLERANCE;
