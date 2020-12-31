@@ -63,10 +63,7 @@ const toSimpleLinestring = R.pipe(
 // Reduce possibilities of collision by chosing anchors so that labels repulse each other
 function optimizeAnchors(positions) {
   return positions.map((position, index) => {
-    const others = [
-      ...positions.slice(0, index),
-      ...positions.slice(index + 1),
-    ];
+    const others = R.remove(index, 1, positions);
     const othersBearing = getBearingFromOtherPoints(position, others);
     return {
       lngLat: position.lngLat,
