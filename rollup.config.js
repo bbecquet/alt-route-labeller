@@ -9,6 +9,7 @@ export default {
     file: 'dist/altRouteLabeller.js',
     format: 'umd',
     name: 'altRouteLabeller',
+    sourcemap: true,
   },
   plugins: [
     commonjs(),
