@@ -1,29 +1,21 @@
 import { coordAll } from '@turf/meta';
 import { lineString } from '@turf/helpers';
-import { getCoord, getCoords } from '@turf/invariant';
+import { getCoord } from '@turf/invariant';
 import along from '@turf/along';
 import lineLength from '@turf/length';
-import lineSliceAlong from '@turf/line-slice-along';
 import bearing from '@turf/bearing';
 
 // find the point at the given distance ratio on the linestring
 function project(ratio, ls) {
   const length = lineLength(ls);
   const lngLat = getCoord(along(ls, length * ratio));
-  // compute the approximate "axis" of the line (horizontal or vertical)
-  // around the label position to chose an anchor minimizing the portion of line covered.
-  const axis = getAxis(lineSliceAlong(ls, length * (ratio - 0.1), length * (ratio + 0.1)));
+  /// keep the local bearing of the line to later choose an anchor minimizing the portion of line covered.
+  const localLineBearing = bearing(
+    along(ls, length * (ratio - 0.1)),
+    along(ls, length * (ratio + 0.1))
+  );
 
-  return { lngLat, axis };
-}
-
-function getAxis(ls) {
-  const segmentCoords = getCoords(ls);
-  const segmentBearing = bearing(segmentCoords[0], segmentCoords[segmentCoords.length - 1]);
-  if (Math.abs(segmentBearing) < 45 || Math.abs(segmentBearing) > 135) {
-    return 'vertical';
-  }
-  return 'horizontal';
+  return { lngLat, localLineBearing };
 }
 
 const asKey = coord => `${coord[0].toFixed(6)},${coord[1].toFixed(6)}`;
@@ -87,7 +79,7 @@ function optimizeAnchors(positions) {
     const othersBearing = getBearingFromOtherPoints(position, others);
     return {
       lngLat: position.lngLat,
-      anchor: getAnchor(position.axis, othersBearing),
+      anchor: getAnchor(position, othersBearing),
     };
   });
 }
@@ -102,7 +94,11 @@ function getBearingFromOtherPoints(position, others) {
     / others.length;
 }
 
-function getAnchor(axis, otherBearing) {
+function getAnchor(position, otherBearing) {
+  const axis = (Math.abs(position.localLineBearing) < 45 || Math.abs(position.localLineBearing) > 135)
+    ? 'vertical'
+    : 'horizontal';
+
   if (axis === 'vertical') {
     return otherBearing > 0 ? 'left' : 'right';
   }
