@@ -1,6 +1,6 @@
 {
   "name": "alt-route-labeller",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A library to compute the best position to put labels on multiple routes between two points",
   "main": "index.js",
   "type": "module",
