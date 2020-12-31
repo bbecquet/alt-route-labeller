@@ -25,19 +25,17 @@ const project = R.curry((ratio, ls) => {
 });
 
 function distinctSegment(coordinates, coordCounts) {
-  // a distinct segment is a part of a line where coordinates
-  // appear only once accross all the features
-  const start = coordinates.findIndex(coord => coordCounts.get(asKey(coord)) === 1);
-  // in some rare cases, an alternative will share all its parts with others.
-  // when this happens, just return the whole line
-  if (start === -1) {
-    return lineString(coordinates);
-  }
-  const end = start + coordinates
-    .slice(start)
-    .findIndex(coord => coordCounts.get(asKey(coord)) !== 1);
-
-  return lineString(coordinates.slice(start, end));
+  const longestDistinctSegment = R.pipe(
+    R.map(coord => coordCounts.get(asKey(coord)) > 1 ? undefined : coord),
+    R.groupWith((a, b) => a && b),
+    R.reject(a => !a[0]),
+    R.reduce((longest, current) => current.length > longest.length ? current : longest, []),
+  )(coordinates);
+  
+  return lineString(longestDistinctSegment.length === 0
+    ? coordinates
+    : longestDistinctSegment,
+  );
 }
 
 // extract the first segment of each linestring
