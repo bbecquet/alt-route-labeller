@@ -101,8 +101,10 @@ function getAnchor(position, otherBearing) {
   return Math.abs(otherBearing) < 90 ? 'bottom' : 'top';
 }
 
-export function getLabelPositions(featureCollection) {
-  const lineStrings = featureCollection.features.map(toSimpleLinestring);
+// routes can be a FeatureCollection or an array of Feature or Geometry
+export function getLabelPositions(routes = []) {
+  const featuresOrGeoms = Array.isArray(routes) ? routes : routes.features; 
+  const lineStrings = featuresOrGeoms.map(toSimpleLinestring);
   const segments = findDistinctSegments(lineStrings);
   const positions = segments.map(project(0.5))
   return optimizeAnchors(positions);
